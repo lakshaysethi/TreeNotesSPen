@@ -1,0 +1,2 @@
+rootProject.name='TreeNotes(S Pen)'
+include ':app'
