@@ -7,8 +7,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+
+import static android.view.MotionEvent.TOOL_TYPE_STYLUS;
 
 public class CanvasView extends View {
 
@@ -21,6 +24,7 @@ public class CanvasView extends View {
     private Paint mPaint;
     private float mX, mY;
     private static final float TOLERANCE = 5;
+    private int tooltype;
 
     public CanvasView(Context c, AttributeSet attrs) {
         super(c, attrs);
@@ -52,8 +56,20 @@ public class CanvasView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
         // draw the mPath with the mPaint on the canvas when onDraw
-        canvas.drawPath(mPath, mPaint);
+
+            canvas.drawPath(mPath, mPaint);
+
+
+    }
+
+    private boolean checkInput() {
+        if (tooltype == TOOL_TYPE_STYLUS){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     // when ACTION_DOWN start touch according to the x,y values
@@ -87,23 +103,28 @@ public class CanvasView extends View {
     //override the onTouchEvent
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        float x = event.getX();
-        float y = event.getY();
 
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                startTouch(x, y);
-                invalidate();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                moveTouch(x, y);
-                invalidate();
-                break;
-            case MotionEvent.ACTION_UP:
-                upTouch();
-                invalidate();
-                break;
+        boolean it_is_stylus =checkInput();
+        if(it_is_stylus) {
+            float x = event.getX();
+            float y = event.getY();
+            tooltype = event.getToolType(2);
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    startTouch(x, y);
+                    invalidate();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    moveTouch(x, y);
+                    invalidate();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    upTouch();
+                    invalidate();
+                    break;
+            }
         }
+
         return true;
     }
 }
