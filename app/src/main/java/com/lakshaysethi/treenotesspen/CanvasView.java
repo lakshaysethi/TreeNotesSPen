@@ -81,12 +81,15 @@ public class CanvasView extends View {
 
     // when ACTION_MOVE move touch according to the x,y values
     private void moveTouch(float x, float y) {
-        float dx = Math.abs(x - mX);
+        boolean it_is_stylus =checkInput();
+        if(it_is_stylus) {
+            float dx = Math.abs(x - mX);
         float dy = Math.abs(y - mY);
         if (dx >= TOLERANCE || dy >= TOLERANCE) {
             mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
             mX = x;
             mY = y;
+        }
         }
     }
 
@@ -104,11 +107,10 @@ public class CanvasView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        boolean it_is_stylus =checkInput();
-        if(it_is_stylus) {
+
             float x = event.getX();
             float y = event.getY();
-            tooltype = event.getToolType(2);
+            tooltype = event.getToolType(0);
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     startTouch(x, y);
@@ -123,7 +125,7 @@ public class CanvasView extends View {
                     invalidate();
                     break;
             }
-        }
+
 
         return true;
     }
