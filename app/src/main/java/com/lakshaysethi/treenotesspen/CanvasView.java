@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import static android.view.MotionEvent.TOOL_TYPE_STYLUS;
 
@@ -29,6 +30,8 @@ public class CanvasView extends View {
     public CanvasView(Context c, AttributeSet attrs) {
         super(c, attrs);
         context = c;
+
+
 
         // we set a new Path
         mPath = new Path();
@@ -50,6 +53,20 @@ public class CanvasView extends View {
         // your Canvas will draw onto the defined Bitmap
         mBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         mCanvas = new Canvas(mBitmap);
+
+
+
+        String wi =Integer.toString(this.getWidth());
+        String he = Integer.toString(this.getHeight());
+
+
+
+        String text = "the height is "+he+"wiidth is "+ wi;
+        int duration = Toast.LENGTH_LONG;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+
     }
 
     // override onDraw
